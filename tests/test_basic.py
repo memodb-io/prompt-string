@@ -1,3 +1,4 @@
+import pytest
 from prompt_string import P
 from prompt_string.string_chain import PromptChain
 
@@ -9,6 +10,15 @@ def test_basic_role():
 
     sp.role = "user"
     assert sp.role == "user"
+
+
+def test_basic_index():
+    p = P("you're a helpful assistant.")
+
+    assert str(p[0]) == "you're"
+    assert str(p[1:]) == " a helpful assistant."
+    with pytest.raises(ValueError):
+        p[1.5]
 
 
 def test_basic_print():
@@ -30,8 +40,11 @@ def test_basic_print():
         "content": "you're a helpful assistant.you're a helpful assistant.",
     }
 
-    p += p
-    print(p, p.role)
+    p4 = p + "Good"
+    assert p4.message() == {
+        "role": "user",
+        "content": "you're a helpful assistant.Good",
+    }
 
 
 def test_basic_chain():
@@ -42,6 +55,21 @@ def test_basic_chain():
     assert len(pc) == 3
     assert pc.infer_roles == ["user", "assistant", "user"]
     assert pc[2] is p
+    assert len(pc[::2]) == 2
+
+    empty_pc = pc[100:]
+    assert len(empty_pc) == 0
+    assert empty_pc.infer_roles == []
+
+    pc_new = PromptChain([p, p2], default_start_role="system")
+    assert pc_new.roles == [None, None]
+    assert pc_new.infer_roles == ["system", "user"]
+
+    ppc = pc / pc
+    assert len(ppc) == 6
+
+    pppc = p / pc
+    assert len(pppc) == 4
 
 
 def test_basic_str_methods():

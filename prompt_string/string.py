@@ -73,8 +73,12 @@ class PromptString(str):
     def __truediv__(self, other):
         from .string_chain import PromptChain
 
-        assert isinstance(other, PromptString)
-        return PromptChain([self, other])
+        if isinstance(other, PromptString):
+            return PromptChain([self, other])
+        elif isinstance(other, PromptChain):
+            return PromptChain([self] + other.prompts)
+        else:
+            raise ValueError(f"Invalid type for Prompt Division: {type(other)}")
 
     @to_prompt_string
     def replace(self, old, new, count=-1):

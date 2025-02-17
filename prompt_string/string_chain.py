@@ -41,14 +41,18 @@ class PromptChain:
     def roles(self):
         return [p.role for p in self.__prompts]
 
+    @property
+    def prompts(self):
+        return self.__prompts
+
     def __truediv__(self, other):
         if isinstance(other, PromptChain):
             return PromptChain(
-                self.__prompts + other.__prompts, default_start_role=self.__start_role
+                self.prompts + other.prompts, default_start_role=self.__start_role
             )
         elif isinstance(other, PromptString):
             return PromptChain(
-                self.__prompts + [other], default_start_role=self.__start_role
+                self.prompts + [other], default_start_role=self.__start_role
             )
         else:
             raise ValueError(f"Invalid type for PromptChain Division: {type(other)}")

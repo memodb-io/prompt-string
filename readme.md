@@ -6,7 +6,14 @@
     <a href="https://pypi.org/project/prompt-string/">
       <img src="https://img.shields.io/pypi/v/prompt-string.svg">
     </a>
+    <a href="https://github.com/memodb-io/prompt-string/actions/workflows/test.yml" > 
+     <img src="https://github.com/memodb-io/prompt-string/actions/workflows/test.yml/badge.svg"/> 
+		</a>
+    <a href="https://codecov.io/github/memodb-io/prompt-string" > 
+     <img src="https://codecov.io/github/memodb-io/prompt-string/graph/badge.svg?token=kgeW8G0HYW"/> 
+		</a>
 </div>
+
 
 
 
@@ -46,9 +53,9 @@ from prompt_string import P
 
 prompt = P("you're a helpful assistant.")
 
-print("Total token size", len(prompt))
-print("Decoded result of the second token", prompt[2])
-print("The decoded result of first five tokens", prompt[:5])
+print("Total token size:", len(prompt))
+print("Decoded result of the second token:", prompt[2])
+print("The decoded result of first three tokens:", prompt[:3])
 ```
 
 `P` supports some `str` native methods to still return a `P` object:
@@ -60,7 +67,7 @@ print("The decoded result of first five tokens", prompt[:5])
 prompt = P("you're a helpful assistant. {temp}")
 
 print(len(prompt.format(temp="End of instructions")))
-print(len(prompt.replace("{temp}", ""))
+print(len(prompt.replace("{temp}", "")))
 ```
 
 > 🧐 Raise an issue if you think other methods should be supported
@@ -75,7 +82,7 @@ from prompt_string import P
 sp = P("you're a helpful assistant.", role="system")
 up = P("How are you?", role="user")
 
-print(sp.role, up.role, (sp+up).roles)
+print(sp.role, up.role, (sp+up).role)
 print(sp + up)
 
 print(sp.message())
@@ -84,7 +91,7 @@ print(sp.message())
 - role can be `None`, `str` for `P`
 - For single prompt, like `sp`, the role is `str`(*e.g.* `system`) or `None`
 - `sp+up` will concatenate two prompt string and generate a new `P`, whose role will be updated if the latter one has one.
-  - For example, `sp+up`'s role is `user`, `sp+P('Hi')`'s role is `system`
+  - For example, `sp+up`'s role is `user`; `sp+P('Hi')`'s role is `system`
 
 
 - `.message(...)` return a JSON object of this prompt.
