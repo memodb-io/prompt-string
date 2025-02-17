@@ -1,5 +1,5 @@
-__author__ = "Gus Ye"
-__version__ = "0.0.1.dev1"
-__url__ = "https://github.com/memodb-io/prompt-string"
+from .string import PromptString as P
 
-print("prompt-string is testing")
+__author__ = "Gus Ye"
+__version__ = "0.0.1"
+__url__ = "https://github.com/memodb-io/prompt-string"
