@@ -50,6 +50,13 @@ def test_basic_print():
 def test_basic_chain():
     p = P("you're a helpful assistant.")
     p2 = P("you're a helpful assistant.")
+
+    pc = p / p2
+    assert pc.messages() == [
+        {"role": "user", "content": "you're a helpful assistant."},
+        {"role": "assistant", "content": "you're a helpful assistant."},
+    ]
+
     pc = p / p2 / p
     assert pc.roles == [None, None, None]
     assert len(pc) == 3
